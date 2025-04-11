@@ -1,37 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alphabet Flashcards</title>
+  <title>Alphabet Flip Cards</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f0f0;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #e3f2fd;
+      padding: 30px;
+      text-align: center;
     }
 
-    .flashcard {
-      width: 150px;
-      height: 200px;
-      perspective: 1000px;
+    h2 {
+      color: #0d47a1;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 15px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .card-wrapper {
+      perspective: 800px;
     }
 
     .card {
-      width: 100%;
-      height: 100%;
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
       position: relative;
+      width: 100%;
+      height: 120px;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
       cursor: pointer;
     }
 
-    .card:hover {
+    .card-wrapper.flipped .card {
       transform: rotateY(180deg);
     }
 
@@ -43,79 +48,85 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    .front {
-      background-color: #fff;
-      color: #333;
+      border: 2px solid #90caf9;
+      border-radius: 8px;
+      background-color: white;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+      font-size: 22px;
+      padding: 10px;
+      box-sizing: border-box;
+      flex-direction: column;
     }
 
     .back {
-      background-color: #333;
-      color: #fff;
       transform: rotateY(180deg);
-      flex-direction: column;
-      font-size: 1rem;
-      padding: 10px;
+      background-color: #bbdefb;
     }
 
     .back img {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 10px;
-      object-fit: cover;
-      border-radius: 5px;
+      max-width: 60px;
+      margin-top: 5px;
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 13px;
+      color: #444;
     }
   </style>
 </head>
 <body>
-  <!-- Flashcards A-Z -->
-  <script>
-    const cards = [
-      { letter: 'A', word: 'Apple', img: 'https://source.unsplash.com/80x80/?apple' },
-      { letter: 'B', word: 'Ball', img: 'https://source.unsplash.com/80x80/?ball' },
-      { letter: 'C', word: 'Cat', img: 'https://source.unsplash.com/80x80/?cat' },
-      { letter: 'D', word: 'Dog', img: 'https://source.unsplash.com/80x80/?dog' },
-      { letter: 'E', word: 'Elephant', img: 'https://source.unsplash.com/80x80/?elephant' },
-      { letter: 'F', word: 'Fish', img: 'https://source.unsplash.com/80x80/?fish' },
-      { letter: 'G', word: 'Grapes', img: 'https://source.unsplash.com/80x80/?grapes' },
-      { letter: 'H', word: 'Hat', img: 'https://source.unsplash.com/80x80/?hat' },
-      { letter: 'I', word: 'Ice cream', img: 'https://source.unsplash.com/80x80/?ice-cream' },
-      { letter: 'J', word: 'Juice', img: 'https://source.unsplash.com/80x80/?juice' },
-      { letter: 'K', word: 'Kite', img: 'https://source.unsplash.com/80x80/?kite' },
-      { letter: 'L', word: 'Lion', img: 'https://source.unsplash.com/80x80/?lion' },
-      { letter: 'M', word: 'Monkey', img: 'https://source.unsplash.com/80x80/?monkey' },
-      { letter: 'N', word: 'Nest', img: 'https://source.unsplash.com/80x80/?nest' },
-      { letter: 'O', word: 'Orange', img: 'https://source.unsplash.com/80x80/?orange' },
-      { letter: 'P', word: 'Panda', img: 'https://source.unsplash.com/80x80/?panda' },
-      { letter: 'Q', word: 'Queen', img: 'https://source.unsplash.com/80x80/?queen' },
-      { letter: 'R', word: 'Rabbit', img: 'https://source.unsplash.com/80x80/?rabbit' },
-      { letter: 'S', word: 'Sun', img: 'https://source.unsplash.com/80x80/?sun' },
-      { letter: 'T', word: 'Tiger', img: 'https://source.unsplash.com/80x80/?tiger' },
-      { letter: 'U', word: 'Umbrella', img: 'https://source.unsplash.com/80x80/?umbrella' },
-      { letter: 'V', word: 'Violin', img: 'https://source.unsplash.com/80x80/?violin' },
-      { letter: 'W', word: 'Whale', img: 'https://source.unsplash.com/80x80/?whale' },
-      { letter: 'X', word: 'Xylophone', img: 'https://source.unsplash.com/80x80/?xylophone' },
-      { letter: 'Y', word: 'Yacht', img: 'https://source.unsplash.com/80x80/?yacht' },
-      { letter: 'Z', word: 'Zebra', img: 'https://source.unsplash.com/80x80/?zebra' },
-    ];
+  <h2>Alphabet Flip Cards</h2>
+  <div class="grid" id="grid"></div>
+  <div class="footer">Roll No: 51007 | FYBSc Artificial Intelligence</div>
 
-    cards.forEach(card => {
-      document.body.innerHTML += `
-        <div class="flashcard">
-          <div class="card">
-            <div class="front">${card.letter}</div>
-            <div class="back">
-              <img src="${card.img}" alt="${card.word}" />
-              <strong>${card.word}</strong>
-            </div>
+  <script>
+    const data = {
+      A: ["Apple", "https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg"],
+      B: ["Ball", "https://upload.wikimedia.org/wikipedia/commons/e/e3/Soccer_ball.svg"],
+      C: ["Cat", "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"],
+      D: ["Dog", "https://upload.wikimedia.org/wikipedia/commons/7/7e/Dog_head.jpg"],
+      E: ["Elephant", "https://upload.wikimedia.org/wikipedia/commons/3/37/African_Bush_Elephant.jpg"],
+      F: ["Fish", "https://upload.wikimedia.org/wikipedia/commons/1/18/Fish_marine_aquarium.jpg"],
+      G: ["Giraffe", "https://upload.wikimedia.org/wikipedia/commons/9/9f/Giraffe_standing.jpg"],
+      H: ["Hat", "https://upload.wikimedia.org/wikipedia/commons/4/45/Sombrero_gallego.jpg"],
+      I: ["Igloo", "https://upload.wikimedia.org/wikipedia/commons/e/e1/Igloo_Patagonia.jpg"],
+      J: ["Jug", "https://upload.wikimedia.org/wikipedia/commons/b/b2/Glass_water_jug.jpg"],
+      K: ["Kite", "https://upload.wikimedia.org/wikipedia/commons/d/d9/Kite_in_flight.jpg"],
+      L: ["Lion", "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg"],
+      M: ["Monkey", "https://upload.wikimedia.org/wikipedia/commons/f/f7/Monkey_%28Macaca_fascicularis%29_in_Ubud.jpg"],
+      N: ["Nest", "https://upload.wikimedia.org/wikipedia/commons/4/4b/Bird_nest_in_tree.jpg"],
+      O: ["Owl", "https://upload.wikimedia.org/wikipedia/commons/4/45/Athene_noctua_%28cropped%29.jpg"],
+      P: ["Parrot", "https://upload.wikimedia.org/wikipedia/commons/f/f7/Ara_ararauna_Luc_Viatour.jpg"],
+      Q: ["Queen", "https://upload.wikimedia.org/wikipedia/commons/6/6a/Chess_qdt45.svg"],
+      R: ["Rabbit", "https://upload.wikimedia.org/wikipedia/commons/7/70/Rabbit_in_montana.jpg"],
+      S: ["Sun", "https://upload.wikimedia.org/wikipedia/commons/c/c3/Solar_sys8.jpg"],
+      T: ["Tiger", "https://upload.wikimedia.org/wikipedia/commons/5/56/Tiger.50.jpg"],
+      U: ["Umbrella", "https://upload.wikimedia.org/wikipedia/commons/b/b6/Red_umbrella.jpg"],
+      V: ["Violin", "https://upload.wikimedia.org/wikipedia/commons/1/1b/Violin_VL100.png"],
+      W: ["Watch", "https://upload.wikimedia.org/wikipedia/commons/7/74/Wrist_watch.jpg"],
+      X: ["Xylophone", "https://upload.wikimedia.org/wikipedia/commons/3/35/Xylophone.jpg"],
+      Y: ["Yak", "https://upload.wikimedia.org/wikipedia/commons/f/f2/Yak_in_Ladakh.jpg"],
+      Z: ["Zebra", "https://upload.wikimedia.org/wikipedia/commons/0/0f/Plains_Zebra_Equus_quagga.jpg"]
+    };
+
+    const grid = document.getElementById("grid");
+
+    for (let letter in data) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "card-wrapper";
+      wrapper.innerHTML = `
+        <div class="card">
+          <div class="front">${letter}</div>
+          <div class="back">
+            ${data[letter][0]}<br>
+            <img src="${data[letter][1]}" alt="${data[letter][0]}">
           </div>
-        </div>
-      `;
-    });
+        </div>`;
+
+      wrapper.onclick = () => wrapper.classList.toggle("flipped");
+      grid.appendChild(wrapper);
+    }
   </script>
 </body>
 </html>
